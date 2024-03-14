@@ -10,38 +10,23 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class SocketConnection {
-    public static char BREAK_CHAR = 10;
-    public static int PORT = 60000;
+    public static final char BREAK_CHAR = 10;
     private Socket socket;
 
-    private OutputStream outputStream;
-    private InputStream inputStream;
-
-    public SocketConnection(String ip) throws IOException {
-        socket = new Socket(ip,PORT);
-        inputStream = socket.getInputStream();
-        outputStream = socket.getOutputStream();
-    }
-
-    public SocketConnection(Socket socket) throws IOException {
+    public SocketConnection(Socket socket) {
         this.socket = socket;
-        inputStream = socket.getInputStream();
-        outputStream = socket.getOutputStream();
     }
 
-    public void writeString(String message) throws IOException {
-        for(char c : message.toCharArray()){
-            outputStream.write(c);
-        }
 
-        outputStream.write(BREAK_CHAR);
+    public Socket getSocket() {
+        return socket;
     }
 
     public String readString() throws IOException {
         String msg = "";
         int currentChar;
 
-        while((currentChar = inputStream.read()) != BREAK_CHAR){
+        while((currentChar = socket.getInputStream().read()) != BREAK_CHAR){
             if(currentChar == -1){
                 throw new IOException("InputStream closed");
             }
@@ -50,6 +35,14 @@ public class SocketConnection {
         }
 
         return msg;
+    }
+
+    public void writeString(String message) throws IOException {
+        for(char c : message.toCharArray()){
+            socket.getOutputStream().write(c);
+        }
+
+        socket.getOutputStream().write(BREAK_CHAR);
     }
 
     public void writeInstruction(Instruction instruction) throws IOException{
@@ -62,8 +55,7 @@ public class SocketConnection {
         return ProtocolTranslator.decode(msg);
     }
 
-
-    public Socket getSocket() {
-        return socket;
+    public void close() throws IOException {
+        socket.close();
     }
 }

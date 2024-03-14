@@ -1,12 +1,6 @@
 package protocol;
 
 public class InstructionBuilder {
-    public static Instruction sendMessage(String message,String receiver){
-        ParamList params = new ParamList();
-        params.put("msg",message);
-        params.put("receiver",receiver);
-        return new Instruction("SENDMESSAGE",params);
-    }
 
     public static Instruction login(String username,String password){
         ParamList params = new ParamList();
