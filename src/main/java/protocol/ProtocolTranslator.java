@@ -34,7 +34,7 @@ public class ProtocolTranslator {
         String name = message.substring(0,bracketIndex);
         ParamList paramList = new ParamList();
 
-        if(message.indexOf("{")+1 != message.indexOf("}")){
+        if(message.contains(";")){
             String params = message.substring(bracketIndex+1,message.length()-1);
 
             String[] choppedParams = params.split(";");

@@ -10,6 +10,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 
 public class SocketConnection {
+    public static final int PORT = 60000;
+
     public static final char BREAK_CHAR = 10;
     private Socket socket;
 
@@ -17,6 +19,9 @@ public class SocketConnection {
         this.socket = socket;
     }
 
+    public SocketConnection(String ip, int port) throws IOException {
+        this.socket = new Socket(ip,port);
+    }
 
     public Socket getSocket() {
         return socket;
